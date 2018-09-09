@@ -1,0 +1,79 @@
+#to bundle css
+npm install --save-dev style-loader css-loader
+
++   module: {
++     rules: [
++       {
++         test: /\.css$/,
++         use: [
++           'style-loader',
++           'css-loader'
++         ]
++       }
++     ]
++   }
+
+
+#handle any other file that we want to put in src
+
+{
+        	test: /\.(png|svg|jpg|gif)$/,
+         	use: [
+           		'file-loader'
+         	]
+       }
+
+       then can do import Icon from "./icon.png";
+
+
+#setting up index.html + cleaning up dist
+html webpack creates index.html that is set up the way it should be
+
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+
+module.exports = {
+  entry: {
+  	app: './src/index.js',
+  	print: './src/print.js'
+  },
+  plugins: [
+  	new CleanWebpackPlugin(['dist']),
+    new HtmlWebpackPlugin({
+       title: 'Output Management'
+     })
+   ],
+
+----# ONLY FOR DEV!!!
+#DEV DEBUGGING
+devtool: 'inline-source-map'
+- tells where in source-map error is (not bundle)
+
+
+#live-reloading use webpack-dev-server
+
+npm install --save-dev webpack-dev-server
+
++   devServer: {
++     contentBase: './dist'
++   },
+
++     "start": "webpack-dev-server --open",
+
+
+
+#hot-module
+refreshes without refreshing
+
+devServer: {
+  contentBase: './dist',
++     hot: true
+},
+
+plugins: [
+  new CleanWebpackPlugin(['dist']),
+  new HtmlWebpackPlugin({
+    title: 'Hot Module Replacement'
+  }),
++     new webpack.HotModuleReplacementPlugin()
+],
